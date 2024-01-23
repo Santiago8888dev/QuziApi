@@ -10,7 +10,7 @@ class QuestionController extends Controller
 {
     public function fetchInsert(){
         $response = Http::get('https://quizapi.io/api/v1/questions',[
-            'apiKey' => "KohCPP8ZppbxAzpwKa3eywGqMs2KmeSdLWVNgC5W",
+            'apiKey' => env('API_KEY'),
             'limit' => 10
         ]);
         $questions = json_decode($response->body());
@@ -22,12 +22,12 @@ class QuestionController extends Controller
             $question->answer_c = $q->answers->answer_c;
             $question->save();
         }
-
+        dd("succes");
         return redirect()->route('index');
     }
 
     public function show(){
-        $data = Question::all();
+        $data = Question::take(5)->get();
         return view('welcome', compact('data'));
     }
 }
